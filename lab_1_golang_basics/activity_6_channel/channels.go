@@ -2,6 +2,7 @@ package main
 
 import "fmt"
 
+// sends data through channel before closing it at the end
 func sendData(ch chan int) {
 	for i := 0; i < 5; i++ {
 		ch <- i

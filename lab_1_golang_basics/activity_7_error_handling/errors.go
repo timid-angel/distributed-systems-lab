@@ -5,6 +5,7 @@ import (
 	"os"
 )
 
+// function to open a file, returns the error if there is any
 func readFile(fileName string) error {
 	file, err := os.Open(fileName)
 	if err != nil {
