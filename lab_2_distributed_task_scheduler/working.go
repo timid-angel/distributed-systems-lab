@@ -1,5 +1,6 @@
 package main
 
+/*
 import (
 	"fmt"
 	"math/rand"
@@ -14,31 +15,20 @@ type Task struct {
 }
 
 const TASK_COUNT = 5
-const RETRY_LIMIT = 1
 
 var COMPLETED_TASKS = 0
 
 // Worker function that processes tasks. If a worker fails, the task will be sent to failChan.
-func worker(id int, taskChan <-chan Task, failChan chan<- Task, wg *sync.WaitGroup, failCounter map[int]int) {
+func worker(id int, taskChan <-chan Task, failChan chan<- Task, wg *sync.WaitGroup) {
 	defer wg.Done()
 
 	for task := range taskChan {
-		// fmt.Printf("Worker %d started task %d: %s\n", id, task.id, task.data)
+		fmt.Printf("Worker %d started task %d: %s\n", id, task.id, task.data)
 
 		// Simulate random failure (30% chance of failure)
-		if rand.Float32() < 0.9 {
+		if rand.Float32() < 0.3 {
 			fmt.Printf("Worker %d failed on task %d\n", id, task.id)
-			failCounter[task.id] += 1
-			if failCounter[task.id] > RETRY_LIMIT {
-				fmt.Printf("Terminated task %d - exceeded retry limit of %d\n", task.id, RETRY_LIMIT)
-				COMPLETED_TASKS += 1
-				if COMPLETED_TASKS == TASK_COUNT {
-					close(failChan)
-				}
-			} else {
-				failChan <- task
-			}
-
+			failChan <- task
 			return
 		}
 
@@ -65,13 +55,12 @@ func main() {
 
 	taskChan := make(chan Task, len(tasks))
 	failChan := make(chan Task, len(tasks))
-	failCounter := make(map[int]int)
 	var wg sync.WaitGroup
 	workerCount := 3
 
 	for i := 1; i <= workerCount; i++ {
 		wg.Add(1)
-		go worker(i, taskChan, failChan, &wg, failCounter)
+		go worker(i, taskChan, failChan, &wg)
 	}
 
 	for _, task := range tasks {
@@ -84,7 +73,7 @@ func main() {
 			fmt.Printf("Reassigning failed task %d\n", failedTask.id)
 			wg.Add(1)
 			taskChan <- failedTask
-			go worker(rand.Intn(workerCount)+1, taskChan, failChan, &wg, failCounter)
+			go worker(rand.Intn(workerCount)+1, taskChan, failChan, &wg)
 		}
 
 		close(taskChan)
@@ -95,3 +84,4 @@ func main() {
 
 	fmt.Println("All tasks completed.")
 }
+*/
