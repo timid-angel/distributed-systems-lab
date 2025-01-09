@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paxos-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: paxos
+  template:
+    metadata:
+      labels:
+        app: paxos
+    spec:
+      containers:
+      - name: paxos
+        image: nmsdistributed/distributed-lab-paxos-server:latest
+        ports:
+        - containerPort: 8080
